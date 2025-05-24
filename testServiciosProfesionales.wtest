@@ -15,19 +15,10 @@ describe "group of tests for Etapa 1" {
 
   method initialize(){
 
-
   
     buenosAires.universidades(#{unsam, unahur})
     santaFe.universidades(#{unr})
     corrientes.universidades(#{uniCorr})
-
-
-    // const provBsAs = new Provincia(nombre="Buenos Aires",universidades=#{unsam, unahur})
-    // const provStaFe = new Provincia(nombre="Santa Fe",universidades=#{unr})
-    // const provCorr = new Provincia(nombre="Corrientes",universidades=#{uniCorr})
-    // const provCord = new Provincia(nombre="Cordoba",universidades=#{})
-    // const provEntreR = new Provincia(nombre="Entre Rios",universidades=#{})
-    // const provMis = new Provincia(nombre = "Misiones",universidades=#{})
 
     nuevaEmpresa.incorporarProf(juana)
     nuevaEmpresa.incorporarProf(melina)
@@ -57,5 +48,19 @@ describe "group of tests for Etapa 1" {
 
   test "profesional mas barato es Juana" {
     assert.equals(juana, nuevaEmpresa.profesionalMasBarato())
+  }
+
+  test "el honorario barato mas barato registrado es " {
+    assert.equals(2800,nuevaEmpresa.honorarioMasBaratoRegistrado())
+  }
+
+  test "la empresa es acotada" {
+    assert.that(nuevaEmpresa.esDeGenteAcotada())
+  }
+
+  test "luciana tambien trabaja en corrientes y misiones,la empresa No es acotada" {
+    luciana.tipo().agregarNuevaProvincia(corrientes)
+    luciana.tipo().agregarNuevaProvincia(cordoba)
+    assert.notThat(nuevaEmpresa.esDeGenteAcotada())
   }
 }

@@ -6,26 +6,10 @@ class Profesional{
   method honorariosPorHora() =  tipo.honorarios(universidad)
   //retorna un float
 
-  // method honorariosPorHora() =  self.honorariosSegunTipo(tipo)
-
-
 
   method provinciasDondePuedeTrabajar() =  tipo.puedeTrabajarEn(universidad)
   //retorna lista de provincias
 
-  // method provinciasDondePuedeTrabajar() =  self.provDondePuedTrabSegunTipo(tipo)
-
-
-  // method honorariosSegunTipo(unTipo){
-  //   var honorarios = 0
-  //   if(unTipo == vinculado){
-  //     honorarios = universidad.honorarioPorHoraEstimado()
-  //   }
-  //   else{
-  //     honorarios =  tipo.honorarios()
-  //   }
-  //   return honorarios
-  // }
 
 }
 
@@ -66,13 +50,14 @@ class Libre{
   var property puedeTrabajarEn
   var property honorarios
 
-  // method puedeTrabajarEn(provincias) {
-  //   puedeTrabajarEn = [provincias]
-  // }
-  
-  method puedeTrabajarEn(universidad) = puedeTrabajarEn
+
+  method puedeTrabajarEn(universidad) = puedeTrabajarEn //recibe un #{conjunto}
 
   method honorarios(universidad) = honorarios
+
+  method agregarNuevaProvincia(unaProvincia){
+    puedeTrabajarEn.add(unaProvincia)
+  }
 
 
 }
@@ -115,14 +100,6 @@ object misiones{
 
 }
 
-/*
-   const provBsAs = new Provincia(nombre="Buenos Aires",universidades=#{unsam, unahur})
-    const provStaFe = new Provincia(nombre="Santa Fe",universidades=#{unr})
-    const provCorr = new Provincia(nombre="Corrientes",universidades=#{uniCorr})
-    const provCord = new Provincia(nombre="Cordoba",universidades=#{})
-    const provEntreR = new Provincia(nombre="Entre Rios",universidades=#{})
-    const provMis = new Provincia(nombre = "Misiones",universidades=#{})*/
-
 
 
 class EmpresaServicio{
@@ -134,13 +111,13 @@ class EmpresaServicio{
 
   method cantProfQueEstudiaronEn(unaUniv) = profesionales.count({prof => prof.universidad() == unaUniv})
 
-  method profesionalesCaros() = profesionales.filter({prof => prof.honorarioPorHora() > self.honorarioReferencia()})
+  method profesionalesCaros() = profesionales.filter({prof => prof.honorariosPorHora() > self.honorarioReferencia()})
 
   method universidadesFormadoras() = profesionales.map({prof => prof.universidad()})
 
   method profesionalMasBarato() = profesionales.find({prof => prof.honorariosPorHora() == self.honorarioMasBaratoRegistrado()})
 
-  method honorarioMasBaratoRegistrado() = profesionales.min({prof => prof.honorariosPorHora()})
+  method honorarioMasBaratoRegistrado() = profesionales.min({prof => prof.honorariosPorHora()}).honorariosPorHora()
 
   method esDeGenteAcotada() = profesionales.all({prof => prof.provinciasDondePuedeTrabajar().size() <= 3})
 }
