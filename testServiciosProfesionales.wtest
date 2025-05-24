@@ -1,0 +1,61 @@
+import serviciosProfesionales.*
+
+describe "group of tests for Etapa 1" {
+  const unsam = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=3500)
+  const unr = new Universidad(provinciaOrigen=santaFe, honorarioPorHoraEstimado=2800)
+  const uniCorr = new Universidad(provinciaOrigen=corrientes, honorarioPorHoraEstimado=4200)
+  const unahur = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=8800)
+
+  var juana = new Profesional(universidad=unr,tipo=vinculado)
+  var melina = new Profesional(universidad=uniCorr,tipo=asociado)
+  var rocio = new Profesional(universidad=unahur,tipo=(new Libre(puedeTrabajarEn=#{santaFe, buenosAires, cordoba},honorarios=5000)))
+  var luciana = new Profesional(universidad=unr,tipo=(new Libre(puedeTrabajarEn=#{santaFe, entreRios},honorarios=3200)))
+
+  var nuevaEmpresa = new EmpresaServicio(honorarioReferencia=3500)
+
+  method initialize(){
+
+
+  
+    buenosAires.universidades(#{unsam, unahur})
+    santaFe.universidades(#{unr})
+    corrientes.universidades(#{uniCorr})
+
+
+    // const provBsAs = new Provincia(nombre="Buenos Aires",universidades=#{unsam, unahur})
+    // const provStaFe = new Provincia(nombre="Santa Fe",universidades=#{unr})
+    // const provCorr = new Provincia(nombre="Corrientes",universidades=#{uniCorr})
+    // const provCord = new Provincia(nombre="Cordoba",universidades=#{})
+    // const provEntreR = new Provincia(nombre="Entre Rios",universidades=#{})
+    // const provMis = new Provincia(nombre = "Misiones",universidades=#{})
+
+    nuevaEmpresa.incorporarProf(juana)
+    nuevaEmpresa.incorporarProf(melina)
+    nuevaEmpresa.incorporarProf(rocio)
+    nuevaEmpresa.incorporarProf(luciana)
+
+  }
+
+
+  test "dos de sus profesionales estudiaron en Rosario, uno en Hurlingham, ninguno (o sea cero) en San Martín." {
+    assert.equals(2, nuevaEmpresa.cantProfQueEstudiaronEn(unr))
+    assert.equals(1, nuevaEmpresa.cantProfQueEstudiaronEn(unahur))
+    assert.equals(0, nuevaEmpresa.cantProfQueEstudiaronEn(unsam))
+
+  }
+
+  test "el profesional caro registrado es Rocio" {
+    assert.that(nuevaEmpresa.profesionalesCaros().contains(rocio))
+  }
+
+  test "unr, unahur y uniCorr son universidades formadoras dentro de la empresa" {
+    assert.that(nuevaEmpresa.universidadesFormadoras().contains(unr))
+    assert.that(nuevaEmpresa.universidadesFormadoras().contains(unahur))
+    assert.that(nuevaEmpresa.universidadesFormadoras().contains(uniCorr))
+
+  }
+
+  test "profesional mas barato es Juana" {
+    assert.equals(juana, nuevaEmpresa.profesionalMasBarato())
+  }
+}
