@@ -3,7 +3,7 @@ import profesional.*
 import universidad.*
 import provincias.*
 import empresa.*
-
+import solicitante.*
 
 describe "group of tests for Etapa 1" {
   const unsam = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=3500)
@@ -72,5 +72,56 @@ describe "group of tests for Etapa 1" {
     luciana.agregarNuevaProvincia(corrientes)
     luciana.agregarNuevaProvincia(cordoba)
     assert.notThat(nuevaEmpresa.esDeGenteAcotada())
+  }
+}
+
+describe "group od test of etapa 2" {
+  const unsam = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=3500)
+  const unr = new Universidad(provinciaOrigen=santaFe, honorarioPorHoraEstimado=2800)
+  const uniCorr = new Universidad(provinciaOrigen=corrientes, honorarioPorHoraEstimado=4200)
+  const unahur = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=8800)
+  const ungs = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=2000)
+
+  var juana = new ProfesionalVinculado(universidad=unr)
+  var melina = new ProfesionalAsociado(universidad=uniCorr)
+  var rocio = new ProfesionalLibre(universidad=unahur)
+  var luciana = new ProfesionalLibre(universidad=unr)
+
+
+  var nuevaEmpresa = new EmpresaServicio(honorarioReferencia=3500)
+
+  var solicJose = new SolicitantePersona(provincia=buenosAires)
+  var solicClubSocial = new SolicitanteClub(provincias=#{misiones})
+  var solicInstitucion = new SolicitanteInstitucion(universidades=#{ungs, unahur})
+
+  method initialize(){
+    rocio.provinciasDondePuedeTr(#{santaFe, buenosAires, cordoba})
+    rocio.honorariosPorHora(5000)
+
+    luciana.provinciasDondePuedeTr(#{santaFe, entreRios})
+    luciana.honorariosPorHora(3200)
+
+    buenosAires.universidades(#{unsam, unahur})
+    santaFe.universidades(#{unr})
+    corrientes.universidades(#{uniCorr})
+
+    nuevaEmpresa.incorporarProf(juana)
+    nuevaEmpresa.incorporarProf(melina)
+    nuevaEmpresa.incorporarProf(rocio)
+    nuevaEmpresa.incorporarProf(luciana)
+  }
+
+  test "nuevaEmpresa puede atender a solicJose" {
+    assert.that(nuevaEmpresa.puedeSatisfacerASolicitante(solicJose))
+  }
+
+  test "nuevaEmpresa no puede atender a solicClubSocial" {
+    assert.notThat(nuevaEmpresa.puedeSatisfacerASolicitante(solicClubSocial))
+    
+  }
+
+  test "nuevaEmpresa puede atender a solicInstitucion" {
+    assert.that(nuevaEmpresa.puedeSatisfacerASolicitante(solicInstitucion))
+    
   }
 }
