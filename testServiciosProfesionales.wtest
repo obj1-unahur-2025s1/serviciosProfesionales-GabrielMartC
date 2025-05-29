@@ -6,16 +6,26 @@ describe "group of tests for Etapa 1" {
   const uniCorr = new Universidad(provinciaOrigen=corrientes, honorarioPorHoraEstimado=4200)
   const unahur = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=8800)
 
-  var juana = new Profesional(universidad=unr,tipo=vinculado)
-  var melina = new Profesional(universidad=uniCorr,tipo=asociado)
-  var rocio = new Profesional(universidad=unahur,tipo=(new Libre(puedeTrabajarEn=#{santaFe, buenosAires, cordoba},honorarios=5000)))
-  var luciana = new Profesional(universidad=unr,tipo=(new Libre(puedeTrabajarEn=#{santaFe, entreRios},honorarios=3200)))
+  // var juana = new Profesional(universidad=unr,tipo=vinculado)
+  // var melina = new Profesional(universidad=uniCorr,tipo=asociado)
+  // var rocio = new Profesional(universidad=unahur,tipo=(new Libre(puedeTrabajarEn=#{santaFe, buenosAires, cordoba},honorarios=5000)))
+  // var luciana = new Profesional(universidad=unr,tipo=(new Libre(puedeTrabajarEn=#{santaFe, entreRios},honorarios=3200)))
+
+  var juana = new ProfesionalVinculado(universidad=unr)
+  var melina = new ProfesionalAsociado(universidad=uniCorr)
+  var rocio = new ProfesionalLibre(universidad=unahur)
+  var luciana = new ProfesionalLibre(universidad=unr)
+
 
   var nuevaEmpresa = new EmpresaServicio(honorarioReferencia=3500)
 
   method initialize(){
+    rocio.provinciasDondePuedeTr(#{santaFe, buenosAires, cordoba})
+    rocio.honorariosPorHora(5000)
 
-  
+    luciana.provinciasDondePuedeTr(#{santaFe, entreRios})
+    luciana.honorariosPorHora(3200)
+
     buenosAires.universidades(#{unsam, unahur})
     santaFe.universidades(#{unr})
     corrientes.universidades(#{uniCorr})
@@ -59,8 +69,8 @@ describe "group of tests for Etapa 1" {
   }
 
   test "luciana tambien trabaja en corrientes y misiones,la empresa No es acotada" {
-    luciana.tipo().agregarNuevaProvincia(corrientes)
-    luciana.tipo().agregarNuevaProvincia(cordoba)
+    luciana.agregarNuevaProvincia(corrientes)
+    luciana.agregarNuevaProvincia(cordoba)
     assert.notThat(nuevaEmpresa.esDeGenteAcotada())
   }
 }
