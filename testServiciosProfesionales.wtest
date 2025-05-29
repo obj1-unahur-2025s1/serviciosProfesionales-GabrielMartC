@@ -1,15 +1,15 @@
-import serviciosProfesionales.*
+// import serviciosProfesionales.*
+import profesional.*
+import universidad.*
+import provincias.*
+import empresa.*
+
 
 describe "group of tests for Etapa 1" {
   const unsam = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=3500)
   const unr = new Universidad(provinciaOrigen=santaFe, honorarioPorHoraEstimado=2800)
   const uniCorr = new Universidad(provinciaOrigen=corrientes, honorarioPorHoraEstimado=4200)
   const unahur = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=8800)
-
-  // var juana = new Profesional(universidad=unr,tipo=vinculado)
-  // var melina = new Profesional(universidad=uniCorr,tipo=asociado)
-  // var rocio = new Profesional(universidad=unahur,tipo=(new Libre(puedeTrabajarEn=#{santaFe, buenosAires, cordoba},honorarios=5000)))
-  // var luciana = new Profesional(universidad=unr,tipo=(new Libre(puedeTrabajarEn=#{santaFe, entreRios},honorarios=3200)))
 
   var juana = new ProfesionalVinculado(universidad=unr)
   var melina = new ProfesionalAsociado(universidad=uniCorr)
