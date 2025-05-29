@@ -10,6 +10,10 @@ class ProfesionalVinculado{
 
   method provinciasDondePuedeTrabajar() =  #{universidad.provinciaOrigen()}
   //retorna lista de provincias
+
+  method trabajaEnAlMenos1DeEstasProv(conjProvincias) = conjProvincias.any({prov => self.provinciasDondePuedeTrabajar().contains(prov)})
+  
+
 }
 
 class ProfesionalAsociado{
@@ -20,26 +24,32 @@ class ProfesionalAsociado{
 
   method provinciasDondePuedeTrabajar() =  #{entreRios, santaFe, corrientes}
   //retorna lista de provincias
+
+  method trabajaEnAlMenos1DeEstasProv(conjProvincias) = conjProvincias.any({prov => self.provinciasDondePuedeTrabajar().contains(prov)})
+
 }
 
 class ProfesionalLibre{
-  const property universidad
-  var provinciasDondePuedeTr = #{}
-  var honorariosPorH = 0
+    const property universidad
+    var provinciasDondePuedeTr = #{}
+    var honorariosPorH = 0
 
-  method honorariosPorHora(honorarios){
+    method honorariosPorHora(honorarios){
     honorariosPorH = honorarios
-  }
+    }
 
-  method honorariosPorHora() =  honorariosPorH
+    method honorariosPorHora() =  honorariosPorH
 
-  method provinciasDondePuedeTr(conjProv){
+    method provinciasDondePuedeTr(conjProv){
     provinciasDondePuedeTr = conjProv
-  }
+    }
 
-  method provinciasDondePuedeTrabajar() =  provinciasDondePuedeTr
+    method provinciasDondePuedeTrabajar() =  provinciasDondePuedeTr
 
-  method agregarNuevaProvincia(unaProvincia){
+    method agregarNuevaProvincia(unaProvincia){
     provinciasDondePuedeTr.add(unaProvincia)
-  }
+    }
+
+    method trabajaEnAlMenos1DeEstasProv(conjProvincias) = conjProvincias.any({prov => provinciasDondePuedeTr.contains(prov)})
+
 }
