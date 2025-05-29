@@ -5,6 +5,7 @@ import provincias.*
 import empresa.*
 import solicitante.*
 
+
 describe "group of tests for Etapa 1" {
   const unsam = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=3500)
   const unr = new Universidad(provinciaOrigen=santaFe, honorarioPorHoraEstimado=2800)
@@ -34,7 +35,6 @@ describe "group of tests for Etapa 1" {
     nuevaEmpresa.incorporarProf(melina)
     nuevaEmpresa.incorporarProf(rocio)
     nuevaEmpresa.incorporarProf(luciana)
-
   }
 
 
@@ -123,5 +123,75 @@ describe "group od test of etapa 2" {
   test "nuevaEmpresa puede atender a solicInstitucion" {
     assert.that(nuevaEmpresa.puedeSatisfacerASolicitante(solicInstitucion))
     
+  }
+}
+
+
+describe "group of test of etapa 3" {
+  const unsam = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=3500)
+  const unr = new Universidad(provinciaOrigen=santaFe, honorarioPorHoraEstimado=2800)
+  const uniCorr = new Universidad(provinciaOrigen=corrientes, honorarioPorHoraEstimado=4200)
+  const unahur = new Universidad(provinciaOrigen=buenosAires, honorarioPorHoraEstimado=8800)
+
+  var juana = new ProfesionalVinculado(universidad=unr)
+  var melina = new ProfesionalAsociado(universidad=uniCorr)
+  var rocio = new ProfesionalLibre(universidad=unahur)
+  var luciana = new ProfesionalLibre(universidad=unr)
+
+
+  test "juana cobra 5000, dona la mitad a su univ, gasta la otra mitad, no posee fondos" {
+    juana.cobrarImporte(5000)
+
+    assert.equals(2500, juana.universidad().fondos())
+    assert.equals(0, juana.fondos())
+  }
+
+  test "melina cobra 2000, dona todo a la asiciacion, no posee fondos" {
+    melina.cobrarImporte(2000)
+
+    assert.equals(2000, asociacionProfLitoral.fondos())
+    assert.equals(0, melina.fondos())
+  }
+
+  test "rocio cobra 4000" {
+    rocio.cobrarImporte(4000)
+
+    assert.equals(4000, rocio.fondos())
+  }
+
+  test "rocio le pasa a luciana 1000, rocio tiene 3000, luciana 1000" {
+    rocio.cobrarImporte(4000)
+    rocio.pasarDinero(luciana, 1000)
+
+    assert.equals(3000, rocio.fondos())
+    assert.equals(1000, luciana.fondos())
+  }
+
+  test "rocio le pasa a melina 3400, rocio ahora posee 600" {
+    rocio.cobrarImporte(4000)
+    rocio.pasarDinero(melina, 3400)
+
+    assert.equals(600, rocio.fondos())
+  }
+
+  test "melina es asociada. Fondo actual de asociacion es 5400, melina posee 0 fondos" {
+    melina.cobrarImporte(2000)
+
+    rocio.cobrarImporte(4000)
+    rocio.pasarDinero(melina, 3400)
+
+    assert.equals(5400,asociacionProfLitoral.fondos())
+    assert.equals(0, melina.fondos())
+
+  }
+
+  test "rocio intenta pasarle 700 a juana, pero no ocurre nada" {
+    rocio.cobrarImporte(4000)
+    rocio.pasarDinero(melina, 3400)
+
+    rocio.pasarDinero(juana, 700)
+
+    assert.equals(600, rocio.fondos())
+    assert.equals(0, juana.fondos())
   }
 }
