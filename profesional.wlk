@@ -85,7 +85,6 @@ class ProfesionalLibre{
       fondos = fondos - unImporte
     }
 
-    //else{} no hace nada
   }
 
 }

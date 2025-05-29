@@ -1,6 +1,7 @@
 import profesional.*
 class EmpresaServicio{
     const profesionales = #{}
+    const clientes = #{}
 
     method incorporarProf(unProfesional) = profesionales.add(unProfesional)
 
@@ -18,5 +19,21 @@ class EmpresaServicio{
 
     method esDeGenteAcotada() = profesionales.all({prof => prof.provinciasDondePuedeTrabajar().size() <= 3})
 
-    method puedeSatisfacerASolicitante(unSolicitante) = unSolicitante.puedeSerAtendidoPor(profesionales)
+    method puedeSatisfacerASolicitante(unSolicitante) = unSolicitante.puedeSerAtendidoPorAlMenosUn(profesionales)
+
+    method darServicio(unSolicitante){
+        if(self.puedeSatisfacerASolicitante(unSolicitante)){
+            const profAleatorioQuePuedeAtender = self.profesionalesQuePuedenAtenderA(unSolicitante).anyOne() //unconjunto
+            profAleatorioQuePuedeAtender.cobrarImporte(profAleatorioQuePuedeAtender.honorariosPorHora())
+            clientes.add(unSolicitante)
+        }
+    }
+
+    method profesionalesQuePuedenAtenderA(unSolicitante) = profesionales.filter({prof => unSolicitante.puedeSerAtendidoPor(prof)})
+    //retorna un conjunto
+
+    method cantidadClientes() = clientes.size()
+
+    method tieneComoClienteA(unSolicitante) = clientes.contains(unSolicitante)
+
 }
